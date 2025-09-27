@@ -9,7 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileStorage.Application", "FileStorage.Application\FileStorage.Application.csproj", "{CD2E5793-AE69-4925-8EF2-D43434215FB0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileStorage.Persistence", "FileStorage.Persistence\FileStorage.Persistence.csproj", "{C349DE42-467C-4D89-AABD-90CB3876F34A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileStorage.Infrastructure", "FileStorage.Infrastructure\FileStorage.Infrastructure.csproj", "{C349DE42-467C-4D89-AABD-90CB3876F34A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
