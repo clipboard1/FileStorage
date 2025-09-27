@@ -1,3 +1,5 @@
+using FileStorage.Application.Abstractions;
+using FileStorage.Application.Services;
 using FileStorage.Infrastructure.Database;
 using FileStorage.Infrastructure.Database.Abstractions;
 using FileStorage.Infrastructure.Database.Repositories;
@@ -19,6 +21,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddScoped<IFileMetadataRepository, FileMetadataRepository>();
 builder.Services.AddScoped<IFileHandler, FileHandler>();
+builder.Services.AddScoped<IFileService, FileService>();
 
 var app = builder.Build();
 
