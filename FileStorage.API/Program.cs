@@ -22,6 +22,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddScoped<IFileMetadataRepository, FileMetadataRepository>();
 builder.Services.AddScoped<IFileHandler, FileHandler>();
 builder.Services.AddScoped<IFileService, FileService>();
+builder.Services.AddScoped<IFileMetadataService, FileMetadataService>();
 
 var app = builder.Build();
 
