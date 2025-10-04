@@ -13,7 +13,7 @@ public class FileHandler : IFileHandler
             Directory.CreateDirectory(StoragePath);
     }
 
-    public async Task<bool> SaveFile(FileStream file, string filename, CancellationToken cancellation = default)
+    public async Task<bool> SaveFile(Stream file, string filename, CancellationToken cancellation = default)
     {
         if (file is null)
             throw new ArgumentException("Empty file");
