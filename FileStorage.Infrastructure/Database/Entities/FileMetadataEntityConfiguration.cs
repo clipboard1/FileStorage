@@ -25,11 +25,6 @@ public class FileMetadataEntityConfiguration : IEntityTypeConfiguration<FileMeta
             .IsRequired();
 
         builder
-            .Property(f => f.MimeType)
-            .HasMaxLength(128)
-            .IsRequired();
-
-        builder
             .Property(f => f.UploadDate)
             .IsRequired();
     }
