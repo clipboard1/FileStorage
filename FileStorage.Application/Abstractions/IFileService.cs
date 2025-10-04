@@ -1,8 +1,12 @@
-﻿namespace FileStorage.Application.Abstractions;
+﻿using FileStorage.Application.Contracts;
+using FileStorage.Infrastructure.Database.Entities;
+
+namespace FileStorage.Application.Abstractions;
 
 public interface IFileService
 {
-    public Task<bool> SaveFile(FileStream file, CancellationToken cancellation = default);
-    public Task<bool> DeleteFile(Guid id, CancellationToken cancellation = default);
-    public Task<FileStream> GetFile(Guid id, CancellationToken cancellation = default);
+    public Task<Guid> SaveFile(Stream file, string fileName, CancellationToken cancellation = default);
+    public Task<bool> DeleteFile(string id, CancellationToken cancellation = default);
+    public Task<DownloadFileDTO> GetFile(string id, CancellationToken cancellation = default);
+    public Task<List<FileInfoDTO>> GetAllFiles(CancellationToken cancellation = default);
 }
