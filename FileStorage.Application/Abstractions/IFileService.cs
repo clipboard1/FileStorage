@@ -1,5 +1,4 @@
 ﻿using FileStorage.Application.Contracts;
-using FileStorage.Infrastructure.Database.Entities;
 
 namespace FileStorage.Application.Abstractions;
 
