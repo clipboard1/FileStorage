@@ -17,7 +17,7 @@ public class FileMetadataEntityConfiguration : IEntityTypeConfiguration<FileMeta
 
         builder
             .Property(f => f.FileName)
-            .HasMaxLength(10)
+            .HasMaxLength(128)
             .IsRequired();
 
         builder
