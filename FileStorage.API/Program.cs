@@ -1,28 +1,15 @@
 using FileStorage.Application.Abstractions;
 using FileStorage.Application.Services;
-using FileStorage.Infrastructure.Database;
-using FileStorage.Infrastructure.Database.Abstractions;
-using FileStorage.Infrastructure.Database.Repositories;
 using FileStorage.Infrastructure.Storage.Abstractions;
 using FileStorage.Infrastructure.Storage.Handlers;
-using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-string? connectionString = builder.Configuration.GetConnectionString(nameof(ApplicationDbContext));
-
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-{
-    options.UseNpgsql(connectionString);
-});
-
-builder.Services.AddScoped<IFileMetadataRepository, FileMetadataRepository>();
 builder.Services.AddScoped<IFileHandler, FileHandler>();
 builder.Services.AddScoped<IFileService, FileService>();
-builder.Services.AddScoped<IFileMetadataService, FileMetadataService>();
 
 builder.Services.AddControllers();
 
