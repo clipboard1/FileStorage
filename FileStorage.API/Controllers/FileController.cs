@@ -14,45 +14,38 @@ public class FileController : ControllerBase
         _fileService = fileService;
     }
 
-    [HttpGet("getall")]
-    public async Task<IActionResult> GetAll(CancellationToken cancellation = default)
-    {
-        var getResult = await _fileService.GetAllFiles(cancellation);
-
-        return Ok(getResult);
-    }
-
     [HttpPost("upload")]
     public async Task<IActionResult> Upload(IFormFile file, CancellationToken cancellation = default)
     {
         var fileStream = file.OpenReadStream();
-        var saveResult = await _fileService.SaveFile(fileStream, file.FileName, cancellation);
+        var saveResult = await _fileService.SaveFile(fileStream, cancellation);
 
-        if (saveResult != Guid.Empty)
-            return Ok(saveResult);
+        if (saveResult.IsFailure)
+            return BadRequest(new ValidationProblemDetails(saveResult.Errors));
 
-        return BadRequest("Something went wrong");
+        return Ok(saveResult.Value);
     }
 
     [HttpGet("download/{id}")]
-    public async Task<IActionResult> Download(string id, CancellationToken cancellation = default)
+    public async Task<IActionResult> Download(Guid id, string originalName, string originalExtenstion, CancellationToken cancellation = default)
     {
-        var fileResult = await _fileService.GetFile(id, cancellation);
-        if (fileResult?.Stream.Length > 0)
-        {
-            return File(fileResult.Stream, "application/octet-stream", fileResult.FileName);
-        }
+        var getResult = await _fileService.GetFile(id, cancellation);
 
-        return NotFound();
+        if (getResult.IsFailure)
+            return BadRequest(new ValidationProblemDetails(getResult.Errors));
+
+        var originalFilename = $"{originalName}{originalExtenstion}";
+
+        return File(getResult.Value, "application/octet-stream", originalFilename);
     }
 
     [HttpDelete("delete/{id}")]
-    public async Task<IActionResult> Delete(string id, CancellationToken cancellation = default)
+    public async Task<IActionResult> Delete(Guid id, CancellationToken cancellation = default)
     {
         var deleteResult = await _fileService.DeleteFile(id, cancellation);
-        if (deleteResult)
-            return Ok();
+        if (deleteResult.IsFailure)
+            return BadRequest(new ValidationProblemDetails(deleteResult.Errors));
 
-        return BadRequest("Something went wrong");
+        return Ok();
     }
 }
