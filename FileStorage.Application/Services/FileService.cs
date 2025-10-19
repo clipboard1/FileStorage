@@ -1,5 +1,4 @@
 ﻿using FileStorage.Application.Abstractions;
-using FileStorage.Application.Contracts;
 using FileStorage.Infrastructure;
 using FileStorage.Infrastructure.Storage.Abstractions;
 
