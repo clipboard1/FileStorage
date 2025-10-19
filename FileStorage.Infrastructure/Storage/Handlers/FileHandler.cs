@@ -13,17 +13,15 @@ public class FileHandler : IFileHandler
             Directory.CreateDirectory(StoragePath);
     }
 
-    public async Task<bool> SaveFile(Stream file, string filename, CancellationToken cancellation = default)
+    public async Task<Result<Guid>> SaveFile(Stream file, CancellationToken cancellation = default)
     {
         if (file is null)
             throw new ArgumentException("Empty file");
 
-        if (string.IsNullOrEmpty(filename))
-            throw new ArgumentException("Empty filename");
-
         try
         {
-            var fullPath = Path.Combine(StoragePath, filename);
+            var guid  = Guid.NewGuid();
+            var fullPath = Path.Combine(StoragePath, guid.ToString());
 
             if (file.CanSeek)
                 file.Position = 0;
@@ -31,39 +29,39 @@ public class FileHandler : IFileHandler
             await using var destination = new FileStream(fullPath, FileMode.Create);
             await file.CopyToAsync(destination, cancellation);
 
-            return true;
+            return Result<Guid>.Success(guid);
         }
-        catch
+        catch  (Exception ex)
         {
-            return false;
+            return Result<Guid>.Failure(Result.ToDict("General", ex.Message));
         }
     }
 
-    public Task<bool> DeleteFile(string filename, CancellationToken cancellation = default)
+    public async Task<Result> DeleteFile(string id, CancellationToken cancellation = default)
     {
         try
         {
-            var fullPath = Path.Combine(StoragePath, filename);
+            var fullPath = Path.Combine(StoragePath, id);
 
             if (File.Exists(fullPath))
                 File.Delete(fullPath);
 
-            return Task.FromResult(true);
+            return Result.Success();
         }
-        catch
+        catch (Exception ex)
         {
-            return Task.FromResult(false);
+            return Result.Failure(Result.ToDict("General", ex.Message));
         }
     }
 
-    public Task<FileStream> GetFile(string filename, CancellationToken cancellation = default)
+    public async Task<Result<FileStream>> GetFile(string id, CancellationToken cancellation = default)
     {
-        var fullPath = Path.Combine(StoragePath, filename);
+        var fullPath = Path.Combine(StoragePath, id);
 
         if (!File.Exists(fullPath))
-            return Task.FromResult<FileStream>(null!);
+            return Result<FileStream>.Failure(Result.ToDict("File", "File not found"));
 
         var stream = new FileStream(fullPath, FileMode.Open, FileAccess.Read, FileShare.Read);
-        return Task.FromResult(stream);
+        return Result<FileStream>.Success(stream);
     }
 }

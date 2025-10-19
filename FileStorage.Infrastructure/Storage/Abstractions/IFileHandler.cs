@@ -2,7 +2,7 @@
 
 public interface IFileHandler
 {
-    public Task<bool> SaveFile(Stream file, string filename, CancellationToken cancellation = default);
-    public Task<bool> DeleteFile(string filename, CancellationToken cancellation = default);
-    public Task<FileStream> GetFile(string filename, CancellationToken cancellation = default);
+    public Task<Result<Guid>> SaveFile(Stream file, CancellationToken cancellation = default);
+    public Task<Result> DeleteFile(string id, CancellationToken cancellation = default);
+    public Task<Result<FileStream>> GetFile(string id, CancellationToken cancellation = default);
 }
