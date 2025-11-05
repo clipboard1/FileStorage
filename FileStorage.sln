@@ -11,8 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileStorage.Application", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileStorage.Infrastructure", "FileStorage.Infrastructure\FileStorage.Infrastructure.csproj", "{C349DE42-467C-4D89-AABD-90CB3876F34A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileStorage.SOAP", "FileStorage.SOAP\FileStorage.SOAP.csproj", "{EF7016E5-D3B3-4F81-A5D9-4D6A4E497504}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,9 +29,5 @@ Global
 		{C349DE42-467C-4D89-AABD-90CB3876F34A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C349DE42-467C-4D89-AABD-90CB3876F34A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C349DE42-467C-4D89-AABD-90CB3876F34A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EF7016E5-D3B3-4F81-A5D9-4D6A4E497504}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EF7016E5-D3B3-4F81-A5D9-4D6A4E497504}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EF7016E5-D3B3-4F81-A5D9-4D6A4E497504}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EF7016E5-D3B3-4F81-A5D9-4D6A4E497504}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
