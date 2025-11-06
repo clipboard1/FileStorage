@@ -7,8 +7,11 @@ public class FileHandler : IFileHandler
     public readonly string StoragePath = OperatingSystem.IsWindows() ? @"C:\Temp\Files" : "/app/data/files";
 
 
-    public FileHandler()
+    public FileHandler(string storagePath = "")
     {
+        if (!string.IsNullOrEmpty(storagePath))
+            StoragePath = storagePath;
+
         if (!Directory.Exists(StoragePath))
             Directory.CreateDirectory(StoragePath);
     }
