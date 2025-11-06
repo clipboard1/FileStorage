@@ -14,10 +14,11 @@ public class FileController : ControllerBase
         _fileService = fileService;
     }
 
+    [Interaction]
     [HttpPost("upload")]
     public async Task<IActionResult> Upload(IFormFile file, CancellationToken cancellation = default)
     {
-        var fileStream = file.OpenReadStream();
+       var fileStream = file.OpenReadStream();
         var saveResult = await _fileService.SaveFile(fileStream, cancellation);
 
         if (saveResult.IsFailure)
@@ -26,6 +27,7 @@ public class FileController : ControllerBase
         return Ok(saveResult.Value);
     }
 
+    [Interaction]
     [HttpGet("download/{id}")]
     public async Task<IActionResult> Download(Guid id, string originalName, string originalExtenstion, CancellationToken cancellation = default)
     {
@@ -39,6 +41,7 @@ public class FileController : ControllerBase
         return File(getResult.Value, "application/octet-stream", originalFilename);
     }
 
+    [Interaction]
     [HttpDelete("delete/{id}")]
     public async Task<IActionResult> Delete(Guid id, CancellationToken cancellation = default)
     {
