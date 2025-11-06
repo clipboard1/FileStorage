@@ -1,6 +1,4 @@
-﻿using System.Net.Http.Json;
-using FileStorage.API;
-using FileStorage.Application.Abstractions;
+﻿using FileStorage.Application.Abstractions;
 using FileStorage.Infrastructure;
 
 namespace FileStorage.Application.Services;
