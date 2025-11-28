@@ -46,8 +46,10 @@ public class FileHandler : IFileHandler
         {
             var fullPath = Path.Combine(StoragePath, id);
 
-            if (File.Exists(fullPath))
-                File.Delete(fullPath);
+            if (!File.Exists(fullPath))
+                return Result<FileStream>.Failure(Result.ToDict("File", "File not found"));
+
+            File.Delete(fullPath);
 
             return Result.Success();
         }
