@@ -17,7 +17,14 @@ public class InteractionFilter : IAsyncActionFilter
     {
         var cancellation = context.HttpContext.RequestAborted;
 
-        await _interactionsService.StartInteraction(cancellation);
+        try
+        {
+            await _interactionsService.StartInteraction(cancellation);
+        }
+        catch (Exception ex)
+        {
+          Console.WriteLine(ex);
+        }
 
         try
         {
@@ -25,7 +32,14 @@ public class InteractionFilter : IAsyncActionFilter
         }
         finally
         {
-            await _interactionsService.EndInteraction(cancellation);
+            try
+            {
+                await _interactionsService.EndInteraction(cancellation);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
         }
     }
 }

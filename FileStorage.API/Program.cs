@@ -21,7 +21,10 @@ builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddHttpClient("InteractionsClient", (sp, client) =>
 {
     var settings = sp.GetRequiredService<IOptions<ActivityServiceSettings>>().Value;
-    client.BaseAddress = new Uri(settings.BaseUrl);
+    if (!string.IsNullOrEmpty(settings.BaseUrl))
+    {
+        client.BaseAddress = new Uri(settings.BaseUrl);
+    }
 });
 
 builder.Services.AddScoped<IInteractionsService, InteractionsService>(sp =>

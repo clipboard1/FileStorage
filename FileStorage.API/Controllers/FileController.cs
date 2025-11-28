@@ -34,7 +34,14 @@ public class FileController : ControllerBase
         var getResult = await _fileService.GetFile(id, cancellation);
 
         if (getResult.IsFailure)
+        {
+            if (getResult.Errors.Any(d => d.Value.Any(v => v.Contains("not found", StringComparison.OrdinalIgnoreCase))))
+            {
+                return NotFound(CreateProblemDetails(getResult.Errors));
+            }
+
             return BadRequest(new ValidationProblemDetails(getResult.Errors));
+        }
 
         var originalFilename = $"{originalName}{originalExtenstion}";
 
@@ -47,8 +54,25 @@ public class FileController : ControllerBase
     {
         var deleteResult = await _fileService.DeleteFile(id, cancellation);
         if (deleteResult.IsFailure)
-            return BadRequest(new ValidationProblemDetails(deleteResult.Errors));
+        {
+            if (deleteResult.Errors.Any(d => d.Value.Any(v => v.Contains("not found", StringComparison.OrdinalIgnoreCase))))
+            {
+                return NotFound(CreateProblemDetails(deleteResult.Errors));
+            }
+
+            return BadRequest(CreateProblemDetails(deleteResult.Errors));
+        }
 
         return Ok();
+    }
+
+    private static ProblemDetails CreateProblemDetails(Dictionary<string, string[]> errors)
+    {
+        return new ProblemDetails
+        {
+            Title = "Operation failed",
+            Detail = "One or more errors occurred",
+            Extensions = { ["errors"] = errors }
+        };
     }
 }
