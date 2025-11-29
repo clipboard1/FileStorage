@@ -110,7 +110,7 @@ namespace FileStorage.UnitTests
         }
 
         [Fact]
-        public async Task DeleteFile_NonExistingFile_ReturnsSuccess()
+        public async Task DeleteFile_NonExistingFile_ReturnsFailure()
         {
             // Arrange
             var nonExistingId = Guid.NewGuid().ToString();
@@ -119,7 +119,7 @@ namespace FileStorage.UnitTests
             var result = await _fileHandler.DeleteFile(nonExistingId);
 
             // Assert
-            Assert.False(result.IsFailure);
+            Assert.True(result.IsFailure);
         }
 
         [Fact]
