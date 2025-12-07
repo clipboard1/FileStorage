@@ -1,4 +1,5 @@
-﻿using FileStorage.Application.Abstractions;
+﻿using System.ComponentModel.DataAnnotations;
+using FileStorage.Application.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FileStorage.API.Controllers;
@@ -16,6 +17,8 @@ public class FileController : ControllerBase
 
     [Interaction]
     [HttpPost("upload")]
+    [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Upload(IFormFile file, CancellationToken cancellation = default)
     {
        var fileStream = file.OpenReadStream();
@@ -29,7 +32,10 @@ public class FileController : ControllerBase
 
     [Interaction]
     [HttpGet("download/{id}")]
-    public async Task<IActionResult> Download(Guid id, string originalName, string originalExtenstion, CancellationToken cancellation = default)
+    [ProducesResponseType(typeof(FileStreamResult), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Download(Guid id, [Required] string originalName, [Required] string originalExtenstion, CancellationToken cancellation = default)
     {
         var getResult = await _fileService.GetFile(id, cancellation);
 
@@ -50,6 +56,9 @@ public class FileController : ControllerBase
 
     [Interaction]
     [HttpDelete("delete/{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Delete(Guid id, CancellationToken cancellation = default)
     {
         var deleteResult = await _fileService.DeleteFile(id, cancellation);
