@@ -1,10 +1,12 @@
-using FileStorage.API;
+using DotNetEnv;
 using FileStorage.Application.Abstractions;
 using FileStorage.Application.Services;
 using FileStorage.Infrastructure;
 using FileStorage.Infrastructure.Storage.Abstractions;
 using FileStorage.Infrastructure.Storage.Handlers;
 using Microsoft.Extensions.Options;
+
+Env.Load();
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,7 +17,14 @@ builder.Services.Configure<ActivityServiceSettings>(builder.Configuration.GetSec
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddScoped<IFileHandler, FileHandler>();
+builder.Services.AddScoped<IFileHandler>(sp =>
+{
+    var config = sp.GetRequiredService<IConfiguration>();
+    var path = config["Storage:Path"];
+
+    return new FileHandler(path);
+});
+
 builder.Services.AddScoped<IFileService, FileService>();
 
 builder.Services.AddHttpClient("InteractionsClient", (sp, client) =>
@@ -36,7 +45,14 @@ builder.Services.AddScoped<IInteractionsService, InteractionsService>(sp =>
 
 builder.Services.AddControllers();
 
-
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+        policy
+            .AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod());
+});
 
 var app = builder.Build();
 
