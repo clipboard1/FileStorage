@@ -4,13 +4,11 @@ namespace FileStorage.Infrastructure.Storage.Handlers;
 
 public class FileHandler : IFileHandler
 {
-    public readonly string StoragePath = OperatingSystem.IsWindows() ? @"C:\Temp\Files" : "/app/data/files";
+    public string StoragePath { get; }
 
-
-    public FileHandler(string storagePath = "")
+    public FileHandler(string storagePath)
     {
-        if (!string.IsNullOrEmpty(storagePath))
-            StoragePath = storagePath;
+        StoragePath = storagePath;
 
         if (!Directory.Exists(StoragePath))
             Directory.CreateDirectory(StoragePath);
